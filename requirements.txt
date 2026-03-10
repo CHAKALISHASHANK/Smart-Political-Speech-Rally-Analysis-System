@@ -12,3 +12,4 @@ plotly>=5.22.0
 joblib>=1.4.0
 scipy>=1.14.0
 wordcloud>=1.9.3
+gunicorn>=21.2.0
