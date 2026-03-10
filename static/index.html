@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PolAnalytica | Smart Political Intelligence Platform</title>
+  <meta name="description"
+    content="AI-powered political rally and speech analysis system. Real-time crowd detection, sentiment analysis, and election impact forecasting."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">🗳</div>
+    <div class="brand-text">
+      <span class="brand-name">PolAnalytica</span>
+      <span class="brand-sub">Intelligence Platform</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">MAIN</div>
+    <a class="nav-item active" data-page="overview" id="nav-overview">
+      <span class="nav-icon">⚡</span><span>Overview</span>
+    </a>
+    <a class="nav-item" data-page="crowd" id="nav-crowd">
+      <span class="nav-icon">👥</span><span>Crowd Detection</span>
+    </a>
+    <a class="nav-item" data-page="sentiment" id="nav-sentiment">
+      <span class="nav-icon">💬</span><span>Speech Sentiment</span>
+    </a>
+    <a class="nav-item" data-page="impact" id="nav-impact">
+      <span class="nav-icon">📊</span><span>Impact Prediction</span>
+    </a>
+    <div class="nav-section-label">INSIGHTS</div>
+    <a class="nav-item" data-page="forecast" id="nav-forecast">
+      <span class="nav-icon">🎯</span><span>Election Forecast</span>
+    </a>
+    <a class="nav-item" data-page="analyst" id="nav-analyst">
+      <span class="nav-icon">🔬</span><span>Analyst Studio</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="model-status">
+      <div class="status-dot"></div>
+      <span>AI Models Online</span>
+    </div>
+    <div class="version-badge">v2.1.0</div>
+  </div>
+</aside>
+
+<!-- ── MAIN CONTENT ──────────────────────────────────────────────────────── -->
+<main class="main-content">
+
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <div class="page-title-area">
+        <h1 class="page-title" id="page-title">Overview Dashboard</h1>
+        <p class="page-subtitle" id="page-subtitle">Real-time political intelligence & analysis</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="live-badge"><div class="pulse-dot"></div>LIVE ANALYSIS</div>
+      <div class="election-countdown" id="election-counter">
+        <span class="countdown-label">Election Day</span>
+        <span class="countdown-value">Nov 5, 2024</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Pages Container -->
+  <div class="pages-container">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         PAGE: OVERVIEW
+    ══════════════════════════════════════════════════════════════════════════ -->
+    <div class="page active" id="page-overview">
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid" id="kpi-grid">
+        <div class="kpi-card kpi-primary">
+          <div class="kpi-top">
+            <div class="kpi-icon">🗓</div>
+            <div class="kpi-trend up">+12%</div>
+          </div>
+          <div class="kpi-value" id="kpi-rallies">—</div>
+          <div class="kpi-label">Total Rallies Analyzed</div>
+          <div class="kpi-bar"><div class="kpi-progress" style="width:85%"></div></div>
+        </div>
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-top">
+            <div class="kpi-icon">👥</div>
+            <div class="kpi-trend up">+8%</div>
+          </div>
+          <div class="kpi-value" id="kpi-attendance">—</div>
+          <div class="kpi-label">Total Attendance</div>
+          <div class="kpi-bar"><div class="kpi-progress" style="width:72%"></div></div>
+        </div>
+        <div class="kpi-card kpi-green">
+          <div class="kpi-top">
+            <div class="kpi-icon">💬</div>
+            <div class="kpi-trend up">+5%</div>
+          </div>
+          <div class="kpi-value" id="kpi-sentiment">—</div>
+          <div class="kpi-label">Avg Speech Sentiment</div>
+          <div class="kpi-bar"><div class="kpi-progress" style="width:66%"></div></div>
+        </div>
+        <div class="kpi-card kpi-gold">
+          <div class="kpi-top">
+            <div class="kpi-icon">🎯</div>
+            <div class="kpi-trend up">+18%</div>
+          </div>
+          <div class="kpi-value" id="kpi-impact">—</div>
+          <div class="kpi-label">Avg Impact Score</div>
+          <div class="kpi-bar"><div class="kpi-progress" style="width:78%"></div></div>
+        </div>
+      </div>
+
+      <!-- Charts Row 1 -->
+      <div class="chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>📈 Rally Impact Timeline</h3>
+            <div class="chart-tags">
+              <span class="tag tag-blue">Impact</span>
+              <span class="tag tag-green">Sentiment</span>
+            </div>
+          </div>
+          <div class="chart-body">
+            <canvas id="timelineChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>👥 Attendance by Rally</h3>
+            <div class="chart-tags"><span class="tag tag-purple">Crowd Size</span></div>
+          </div>
+          <div class="chart-body">
+            <canvas id="attendanceChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row 2 -->
+      <div class="chart-grid-3">
+        <div class="chart-card">
+          <div class="chart-header"><h3>🗺 Swing Probability by Rally</h3></div>
+          <div class="chart-body chart-body-sm">
+            <canvas id="swingRadarChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><h3>🌡 Speech Tone Distribution</h3></div>
+          <div class="chart-body chart-body-sm">
+            <canvas id="sentimentDonutChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><h3>⚡ Top Rally Rankings</h3></div>
+          <div class="top-rallies-list" id="top-rallies-list">
+            <div class="loading-pulse">Loading...</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         PAGE: CROWD DETECTION
+    ══════════════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-crowd">
+
+      <div class="rally-selector-bar">
+        <label class="selector-label">Select Rally:</label>
+        <select class="rally-select" id="crowd-rally-select">
+          <option value="0">Loading...</option>
+        </select>
+      </div>
+
+      <!-- Crowd KPIs -->
+      <div class="kpi-grid kpi-grid-3">
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-icon">🎪</div>
+          <div class="kpi-value" id="crowd-kpi-attendance">—</div>
+          <div class="kpi-label">Estimated Attendance</div>
+        </div>
+        <div class="kpi-card kpi-green">
+          <div class="kpi-icon">🔥</div>
+          <div class="kpi-value" id="crowd-kpi-density">—</div>
+          <div class="kpi-label">Density Class</div>
+        </div>
+        <div class="kpi-card kpi-gold">
+          <div class="kpi-icon">✅</div>
+          <div class="kpi-value" id="crowd-kpi-auth">—</div>
+          <div class="kpi-label">Authenticity Score</div>
+        </div>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header"><h3>🗺 Crowd Density Heatmap</h3></div>
+          <div class="heatmap-container" id="heatmap-container">
+            <div class="loading-pulse">Generating heatmap...</div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><h3>🏟 Zone Occupancy Analysis</h3></div>
+          <div class="chart-body">
+            <canvas id="zoneChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header"><h3>👤 Demographic Breakdown</h3></div>
+          <div class="chart-body chart-body-sm">
+            <canvas id="demographicChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><h3>⚡ Crowd Engagement Metrics</h3></div>
+          <div class="engagement-grid" id="engagement-grid">
+            <div class="loading-pulse">Loading metrics...</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         PAGE: SPEECH SENTIMENT
+    ══════════════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-sentiment">
+
+      <div class="rally-selector-bar">
+        <label class="selector-label">Select Rally:</label>
+        <select class="rally-select" id="sentiment-rally-select"></select>
+      </div>
+
+      <!-- Sentiment KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-primary">
+          <div class="kpi-icon">💬</div>
+          <div class="kpi-value" id="sent-kpi-polarity">—</div>
+          <div class="kpi-label">Overall Polarity</div>
+        </div>
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-icon">🎭</div>
+          <div class="kpi-value" id="sent-kpi-tone">—</div>
+          <div class="kpi-label">Speech Tone</div>
+        </div>
+        <div class="kpi-card kpi-green">
+          <div class="kpi-icon">🎯</div>
+          <div class="kpi-value" id="sent-kpi-persuasion">—</div>
+          <div class="kpi-label">Persuasion Score</div>
+        </div>
+        <div class="kpi-card kpi-gold">
+          <div class="kpi-icon">📝</div>
+          <div class="kpi-value" id="sent-kpi-words">—</div>
+          <div class="kpi-label">Word Count</div>
+        </div>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header"><h3>📊 Topic Coverage Breakdown</h3></div>
+          <div class="chart-body">
+            <canvas id="topicsChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><h3>🎭 Emotional Arc Trajectory</h3></div>
+          <div class="chart-body">
+            <canvas id="emotionalArcChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header"><h3>🔤 Top Key Words</h3></div>
+          <div class="wordcloud-container" id="wordcloud-container"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><h3>💡 Rhetorical Devices Used</h3></div>
+          <div class="chart-body chart-body-sm">
+            <canvas id="rhetoricChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Quotes -->
+      <div class="chart-card">
+        <div class="chart-header"><h3>💬 Most Impactful Quotes</h3></div>
+        <div class="quotes-container" id="quotes-container">
+          <div class="loading-pulse">Extracting quotes...</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         PAGE: IMPACT PREDICTION
+    ══════════════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-impact">
+
+      <div class="chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header"><h3>🎯 Impact Score — All Rallies</h3></div>
+          <div class="chart-body">
+            <canvas id="impactBarChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><h3>🔀 Vote Swing Probability</h3></div>
+          <div class="chart-body">
+            <canvas id="swingChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header"><h3>📡 Media Reach vs. Social Virality</h3></div>
+          <div class="chart-body">
+            <canvas id="mediaReachChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><h3>⚙️ Model Feature Importance</h3></div>
+          <div class="chart-body">
+            <canvas id="featureImportanceChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rally Impact Cards -->
+      <div class="chart-card">
+        <div class="chart-header"><h3>📋 Rally Impact Scorecard</h3></div>
+        <div class="impact-table-wrap">
+          <table class="impact-table" id="impact-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Rally</th>
+                <th>City</th>
+                <th>Impact Score</th>
+                <th>Impact Level</th>
+                <th>Swing Prob.</th>
+                <th>Media Reach</th>
+                <th>Raise Lift</th>
+              </tr>
+            </thead>
+            <tbody id="impact-table-body">
+              <tr><td colspan="8" class="loading-pulse">Loading data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         PAGE: ELECTION FORECAST
+    ══════════════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-forecast">
+
+      <!-- Forecast KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-primary">
+          <div class="kpi-icon">🏆</div>
+          <div class="kpi-value" id="fc-kpi-winprob">—</div>
+          <div class="kpi-label">Projected Win Probability</div>
+        </div>
+        <div class="kpi-card kpi-blue">
+          <div class="kpi-icon">📡</div>
+          <div class="kpi-value" id="fc-kpi-reach">—</div>
+          <div class="kpi-label">Total Media Reach (M)</div>
+        </div>
+        <div class="kpi-card kpi-green">
+          <div class="kpi-icon">⚡</div>
+          <div class="kpi-value" id="fc-kpi-momentum">—</div>
+          <div class="kpi-label">Overall Momentum</div>
+        </div>
+        <div class="kpi-card kpi-gold">
+          <div class="kpi-icon">🔮</div>
+          <div class="kpi-value" id="fc-kpi-confidence">—</div>
+          <div class="kpi-label">Forecast Confidence</div>
+        </div>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header"><h3>📈 Polling Lead Trajectory</h3></div>
+          <div class="chart-body">
+            <canvas id="pollingChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><h3>🗺 Key Battleground States</h3></div>
+          <div class="states-grid" id="states-grid">
+            <div class="loading-pulse">Loading state data...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header"><h3>⚡ Campaign Momentum Gauge</h3></div>
+        <div class="gauge-container" id="gauge-container"></div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         PAGE: ANALYST STUDIO
+    ══════════════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-analyst">
+
+      <div class="analyst-layout">
+        <!-- Input Panel -->
+        <div class="analyst-input-panel">
+          <div class="panel-header">
+            <h3>🔬 Custom Rally Analyzer</h3>
+            <p>Enter speech text & parameters for real-time AI analysis</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Speaker / Candidate Name</label>
+            <input class="form-input" id="an-speaker" type="text"
+              placeholder="e.g. Senator John Smith" value="Candidate Alpha"/>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Rally Name</label>
+            <input class="form-input" id="an-rally" type="text"
+              placeholder="e.g. Capital City Grand Rally" value="Custom Campaign Rally 2024"/>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Expected Attendance</label>
+              <input class="form-input" id="an-attendance" type="number"
+                value="50000" min="100" max="500000"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Days to Election</label>
+              <input class="form-input" id="an-days" type="number"
+                value="30" min="0" max="365"/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Battleground State?</label>
+              <select class="form-input" id="an-battleground">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Incumbent?</label>
+              <select class="form-input" id="an-incumbent">
+                <option value="0">Challenger</option>
+                <option value="1">Incumbent</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Speech Text</label>
+            <textarea class="form-textarea" id="an-speech" rows="10"
+              placeholder="Paste the political speech text here for analysis...">My fellow citizens! Today we stand together at a defining moment. We will build stronger communities, better schools, and a healthier nation. The economy has never had greater potential, and together we will unlock it. Our workers deserve fair wages. Our families deserve quality healthcare. Our children deserve world-class education. We will deliver on every promise with strength and determination. The time for change is now! Together, there is nothing we cannot achieve. Thank you, and God bless our great nation!</textarea>
+          </div>
+
+          <button class="analyze-btn" id="analyze-btn" onclick="runAnalysis()">
+            <span class="btn-icon">⚡</span>
+            <span>Run AI Analysis</span>
+          </button>
+
+          <div class="analyze-loading" id="analyze-loading" style="display:none">
+            <div class="loading-spinner"></div>
+            <span>Running NLP + ML pipeline...</span>
+          </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="analyst-results-panel" id="analyst-results">
+          <div class="results-placeholder">
+            <div class="placeholder-icon">🔬</div>
+            <h3>Ready for Analysis</h3>
+            <p>Fill in the rally parameters and speech text, then click<br>
+               <strong>Run AI Analysis</strong> to get real-time insights.</p>
+            <div class="feature-list">
+              <div class="feature-item">✅ NLP Sentiment Analysis</div>
+              <div class="feature-item">✅ Crowd Impact Simulation</div>
+              <div class="feature-item">✅ ML Impact Prediction</div>
+              <div class="feature-item">✅ Topic Extraction</div>
+              <div class="feature-item">✅ Persuasion Scoring</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- end pages-container -->
+</main>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
